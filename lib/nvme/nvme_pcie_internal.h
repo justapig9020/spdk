@@ -19,7 +19,7 @@
  */
 #define NVME_MAX_SGL_DESCRIPTORS	(250)
 
-#define NVME_MAX_PRP_LIST_ENTRIES	(503)
+#define NVME_MAX_PRP_LIST_ENTRIES	(503 - 1)
 
 /* Minimum admin queue size */
 #define NVME_PCIE_MIN_ADMIN_QUEUE_SIZE	(256)
@@ -97,7 +97,7 @@ struct nvme_tracker {
 	/* Don't move, metadata SGL is always contiguous with Data Block SGL */
 	struct spdk_nvme_sgl_descriptor		meta_sgl;
 	union {
-		uint64_t			prp[NVME_MAX_PRP_LIST_ENTRIES];
+		uint64_t			prp[NVME_MAX_PRP_LIST_ENTRIES] __attribute__((aligned(16)));
 		struct spdk_nvme_sgl_descriptor	sgl[NVME_MAX_SGL_DESCRIPTORS];
 	} u;
 };
